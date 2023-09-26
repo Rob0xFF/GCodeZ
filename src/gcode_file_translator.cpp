@@ -133,11 +133,11 @@ uint8_t gCodeFileTranslator::addZ()
 	out.close();
 
 	if(myCalc->pointsOutside) {
-		cout << "[Warning]: Found " << myCalc->pointsOutside << " points with no intersection to the surface. Clipped to machine bed. Please check." << endl;
+		cout << "[Warning]: Found " << myCalc->pointsOutside << " points with no intersection with the surface. Clipped to the machine bed. Please verify." << endl;
 	}
 
 	if(myCalc->pointsTooLow) {
-		cout << "[Warning]: Found " << myCalc->pointsTooLow << " points below z-axis range. Clipped to machine bed. Please check." << endl;
+		cout << "[Warning]: Found " << myCalc->pointsTooLow << " points below z-axis range. Clipped to machine bed. Please verify." << endl;
 	}
 
 	cout << "[Info]: Written output file " << myOutputFile << endl;
