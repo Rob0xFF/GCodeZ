@@ -14,53 +14,53 @@
 
 class STL_file
 {
-public:
+	public:
 
-    STL_file(std::string filename, uint8_t simplify = 0);
+		STL_file(std::string filename, uint8_t simplify = 0);
 
-    ~STL_file();
+		~STL_file();
 
-    uint8_t read();
+		uint8_t read();
 
-    uint32_t numberOfFacets = 0;
+		uint32_t numberOfFacets = 0;
 
-    struct vertex {
-        float x;
-        float y;
-        float z;
-    };
+		struct vertex {
+			float x;
+			float y;
+			float z;
+		};
 
-    struct facet {
-        vertex vertex1;
-        vertex vertex2;
-        vertex vertex3;
-    };
+		struct facet {
+			vertex vertex1;
+			vertex vertex2;
+			vertex vertex3;
+		};
 
-    facet * surface;
-	
-	vertex * surface_normals;
-	
-	uint8_t * useFacet;
+		facet * surface;
 
-private:
+		vertex * surface_normals;
 
-    uint8_t isBinary();
+		uint8_t * useFacet;
 
-	uint8_t is_binary;
+	private:
 
-    std::string myFile;
+		uint8_t isBinary();
 
-    std::ifstream ifs;
+		uint8_t is_binary;
 
-    std::filebuf * pbuf;
+		std::string myFile;
 
-    uint32_t size;
+		std::ifstream ifs;
 
-    char * buffer;
+		std::filebuf * pbuf;
 
-    char * bufptr;
-	
-	uint8_t doSimplify;
+		uint32_t size;
+
+		char * buffer;
+
+		char * bufptr;
+
+		uint8_t doSimplify;
 
 };
 

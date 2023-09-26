@@ -16,35 +16,35 @@
 
 class gCodeFileTranslator
 {
-public:
+	public:
 
-    gCodeFileTranslator(std::string inputFileName, std::string outputFileName, STL_file * stlFile, DistanceCalculator * calc);
+		gCodeFileTranslator(std::string inputFileName, std::string outputFileName, STL_file * stlFile, DistanceCalculator * calc);
 
-    ~gCodeFileTranslator();
+		~gCodeFileTranslator();
 
-    uint8_t setMinStep(float minstep);
+		uint8_t setMinStep(float minstep);
 
-    uint32_t length = 0;
+		uint32_t length = 0;
 
-    uint8_t read();
+		uint8_t read();
 
-    uint8_t addZ();
+		uint8_t addZ();
 
-private:
+	private:
 
-    std::string myGCodeFile;
+		std::string myGCodeFile;
 
-    std::string myOutputFile;
+		std::string myOutputFile;
 
-    STL_file * mySTL_file;
+		STL_file * mySTL_file;
 
-    DistanceCalculator * myCalc;
+		DistanceCalculator * myCalc;
 
-    std::ifstream ifs;
+		std::ifstream ifs;
 
-    char * buffer;
+		char * buffer;
 
-    float myMinStep = 0.5f;
+		float myMinStep = 0.5f;
 };
 
 #endif

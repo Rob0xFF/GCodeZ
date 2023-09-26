@@ -33,47 +33,47 @@
 
 class DistanceCalculator
 {
-public:
+	public:
 
-    DistanceCalculator(STL_file * stlFile, float diameter);
+		DistanceCalculator(STL_file * stlFile, float diameter);
 
-    ~DistanceCalculator();
+		~DistanceCalculator();
 
-    uint8_t findNearestIntersection(float * origin);
+		uint8_t findNearestIntersection(float * origin);
 
-    float calculateLaserDistance();
-	
-	uint32_t pointsOutside = 0;
-	uint32_t pointsTooLow = 0;
-	
-	float laserDiameter = 0.0f;
-	float maxZ = -4.5584f * laserDiameter + 34.71f;  // may come from config file
+		float calculateLaserDistance();
 
-private:
+		uint32_t pointsOutside = 0;
+		uint32_t pointsTooLow = 0;
 
-    STL_file * mySTL_file;
+		float laserDiameter = 0.0f;
+		float maxZ = -4.5584f * laserDiameter + 34.71f;  // may come from config file
 
-    float * myOrig;
+	private:
 
-    const float dir[3] = {
-        0.0f,
-        0.0f,
-        -1.0f
-    };
+		STL_file * mySTL_file;
 
-    float t;
-    float u;
-    float v;
-    float intersect[3];
+		float * myOrig;
 
-    float dist;
-    float mindist = 1000.0f;
-    uint8_t validIntersections = 0;
+		const float dir[3] = {
+			0.0f,
+			0.0f,
+			-1.0f
+		};
+
+		float t;
+		float u;
+		float v;
+		float intersect[3];
+
+		float dist;
+		float mindist = 1000.0f;
+		uint8_t validIntersections = 0;
 
 
-    float laserDist = 0.0f;
+		float laserDist = 0.0f;
 
-    uint8_t moellerTrumbore(float orig[3], float vert0[3], float vert1[3], float vert2[3]);
+		uint8_t moellerTrumbore(float orig[3], float vert0[3], float vert1[3], float vert2[3]);
 
 };
 
