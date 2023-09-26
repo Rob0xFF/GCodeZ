@@ -14,3 +14,6 @@
 
 ## Build
  uses std::string.contains(), therefore -std=c++2b compiler flag must be set to g++
+ 
+## GUI
+ A basic GUI for Python ist available in /src/gcodeZ_GUI.py
