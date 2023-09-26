@@ -13,7 +13,7 @@
  **--stepwith=stepwith** Minimal distance between two spatial points in the output in mm, defaults to 0.5mm, lowering will yield the laser to more accuratly follow stl surface, but takes more time to compute
 
 ## Build
- uses std::string.contains(), therefore -std=c++2b compiler flag must be set to g++
+ uses std::string.contains(), therefore -std=c++2b compiler flag must be passed to g++
  
 ## GUI
  A basic GUI for Python ist available in /src/gcodeZ_GUI.py
