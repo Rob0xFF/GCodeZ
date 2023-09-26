@@ -17,7 +17,9 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 {
     myOrig = origin;
     mindist = 1000.0f;
-    numberofintersections = 0;
+    validIntersections = 0;
+	uint8_t below = 0;
+	uint8_t above = 0;
     for (uint32_t i = 0; i < mySTL_file->numberOfFacets; i++) {
         float vert0[3] = {
             mySTL_file->surface[i].vertex1.x,
@@ -36,23 +38,37 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
         };
         uint8_t retVal = moellerTrumbore(myOrig, vert0, vert1, vert2);
         if (retVal != 0) {
-            if (mindist > dist) {
+			if(intersect[2] < 0.0f) {
+				below++;
+			}
+			else if(intersect[2] > maxZ) {
+				above++;
+			}
+			else if (mindist > dist) {
                 mindist = dist;
+				validIntersections++;
             }
-            numberofintersections++;
         }
     }
     dist = mindist;
-    //cout << "Found intersection at distance of " << mindist << endl;
-    if(numberofintersections == 0) {
-        dist = 45.0f;
+    if(validIntersections == 0 && above == 0 && below == 0) {
+        dist = maxZ;
+		pointsOutside++;
     }
-    return numberofintersections;
+	else if(validIntersections == 0 && above > 0) {
+		cerr << "[Error]: STL model out of positive z-range. Possibility of laser crash. Exiting." << endl;
+		exit(1);
+	}
+	else if(validIntersections == 0 && above == 0 && below > 0) {
+		dist = maxZ; // clip distance
+		pointsTooLow++;
+	}
+    return validIntersections;
 }
 
 float DistanceCalculator::calculateLaserDistance()
 {
-    return -dist + 45.0f - (-4.5584f * laserDiameter + 34.71f);  // might come from config file in the future ....
+    return -dist;
 }
 
 /*

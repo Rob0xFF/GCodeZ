@@ -95,12 +95,12 @@ uint8_t gCodeFileTranslator::addZ()
                         float norm = 1 / sqrt(pow(thisX-lastX,2) + pow(thisY-lastY,2));
                         lastX = lastX + myMinStep * (thisX - lastX) * norm;
                         lastY = lastY + myMinStep * (thisY - lastY) * norm;
-                        float orig[3] = {lastX, lastY, 45.0f};
+                        float orig[3] = {lastX, lastY, myCalc->maxZ};
                         distFromLastPoint = sqrt(pow(thisX-lastX, 2) + pow(thisY-lastY, 2));
                         myCalc->findNearestIntersection(orig);
                         out << gCodeValue << " X" << lastX << " Y" << lastY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
                     }
-                    float orig[3] = {thisX, thisY, 45.0f};
+                    float orig[3] = {thisX, thisY, myCalc->maxZ};
                     myCalc->findNearestIntersection(orig);
                     out << gCodeValue << " X" << thisX << " Y" << thisY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
                     lastX = thisX;
@@ -117,7 +117,13 @@ uint8_t gCodeFileTranslator::addZ()
 
     }
     out.close();
-    cout << endl << "[Info]: Written output file " << myOutputFile << endl;
+	if(myCalc->pointsOutside) {
+		cout << "[Warning]: Found " << myCalc->pointsOutside << " points with no intersection to the surface. Clipped to machine bed. Please check." << endl;
+	}
+	if(myCalc->pointsTooLow) {
+		cout << "[Warning]: Found " << myCalc->pointsTooLow << " points below z-axis range. Clipped to machine bed. Please check." << endl;
+	}
+    cout << "[Info]: Written output file " << myOutputFile << endl;
 
     return 0;
 }

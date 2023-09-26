@@ -42,6 +42,12 @@ public:
     uint8_t findNearestIntersection(float * origin);
 
     float calculateLaserDistance();
+	
+	uint32_t pointsOutside = 0;
+	uint32_t pointsTooLow = 0;
+	
+	float laserDiameter = 0.0f;
+	float maxZ = -4.5584f * laserDiameter + 34.71f;  // may come from config file
 
 private:
 
@@ -62,9 +68,8 @@ private:
 
     float dist;
     float mindist = 1000.0f;
-    uint8_t numberofintersections = 0;
-	
-	float laserDiameter = 0.0f;
+    uint8_t validIntersections = 0;
+
 
     float laserDist = 0.0f;
 
