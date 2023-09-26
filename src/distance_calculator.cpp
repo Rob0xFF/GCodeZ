@@ -21,6 +21,7 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 	uint8_t below = 0;
 	uint8_t above = 0;
     for (uint32_t i = 0; i < mySTL_file->numberOfFacets; i++) {
+		if(mySTL_file->useFacet[i]) {
         float vert0[3] = {
             mySTL_file->surface[i].vertex1.x,
             mySTL_file->surface[i].vertex1.y,
@@ -62,6 +63,7 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 	else if(validIntersections == 0 && above == 0 && below > 0) {
 		dist = maxZ; // clip distance
 		pointsTooLow++;
+	}
 	}
     return validIntersections;
 }

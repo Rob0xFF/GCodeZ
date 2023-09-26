@@ -1,19 +1,21 @@
 # GCodeZ
- pseudo-3D projection of 2D laser-gcode onto a surface derived from *.stl
+A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl file.
 ## Required Command Line Options: 
- **--stl=stl_file** STL File, could be binary or ASCII
+ **--stl=stl_file** The STL file can be either binary or ASCII format.
  
- **--gcode=gcode_file** 2D GCode file
+ **--gcode=gcode_file** The 2D GCode file.
 
- **--output=output_file** Output file, which will contain the pseudo-3D Code
+ **--output=output_file** The output file will contain the pseudo-3D code.
 
- **--laser=laser_diameter** Diameter of the laser spot im mm, must be the same which was used for 2D GCode generation
+ **--laser=laser_diameter** The laser spot diameter is specified in millimeters and must match the diameter used for 2D GCode generation.
 
 ## Optional Command Line Options:
- **--stepwith=stepwith** Minimal distance between two spatial points in the output in mm, defaults to 0.5mm, lowering will yield the laser to more accuratly follow stl surface, but takes more time to compute
+ **--stepwith=stepwith** The minimum spatial point-to-point distance in the output is expressed in millimeters, with a default value of 0.5 millimeters. Reducing this value will result in greater precision in laser path tracking along the STL surface but will necessitate a longer computation time.
+ 
+ **--simplify** Consider only facets whose normal vector contains a component in the positive z-direction. This can lead to increased execution speed in certain models. The option does not require any parameters.
 
 ## Build
- uses std::string.contains(), therefore -std=c++2b compiler flag must be passed to g++
+It utilizes std::string.contains(), hence the -std=c++2b compiler flag needs to be provided to g++.
  
 ## GUI
- A basic GUI for Python ist available in /src/gcodeZ_GUI.py
+A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.

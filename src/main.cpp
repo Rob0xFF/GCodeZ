@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     string output_file;
     float stepwith_value = 0.0f;
     float laser_value = 0.0f;
-    int simplify_flag;
+    int simplify_flag = 0;
 
     int c;
     int digit_optind = 0;
@@ -35,12 +35,11 @@ int main(int argc, char* argv[])
             {"output", required_argument, 0, 0},
             {"laser", required_argument, 0, 0},
             {"stepwith", optional_argument, 0, 0},
-            {"simplify", no_argument, 0, 0},
+            {"simplify", no_argument, &simplify_flag, 1},
             {0, 0, 0, 0}
         };
 
-        c = getopt_long(argc, argv, "",
-                        long_options, &option_index);
+        c = getopt_long(argc, argv, "", long_options, &option_index);
         if (c == -1)
             break;
 
@@ -57,7 +56,7 @@ int main(int argc, char* argv[])
                     laser_value = stof(optarg);
                 } else if(long_options[option_index].name == "stepwith") {
                     stepwith_value = stof(optarg);
-                }
+                }                 
             break;
         }
     }
@@ -84,7 +83,7 @@ int main(int argc, char* argv[])
         exit(exit_val);
     }
 
-    STL_file mySTL = STL_file(stl_file);
+    STL_file mySTL = STL_file(stl_file, simplify_flag);
     mySTL.read();
 
     DistanceCalculator myDistanceCalculator = DistanceCalculator(&mySTL, laser_value);

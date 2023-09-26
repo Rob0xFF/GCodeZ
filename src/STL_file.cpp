@@ -7,9 +7,10 @@
 
 using namespace std;
 
-STL_file::STL_file(string filename)
+STL_file::STL_file(string filename, uint8_t simplify)
 {
     myFile = filename;
+	doSimplify = simplify;
 }
 
 STL_file::~STL_file()
@@ -35,7 +36,6 @@ uint8_t STL_file::read()
     if(!isBinary()) {
         cout << "[Info]: STL file seems to be ASCII: " << myFile << endl;
         is_binary = 0;
-        //exit(2);
     } else {
         cout << "[Info]: STL file seems to be binary: " << myFile << endl;
         is_binary = 1;
@@ -55,6 +55,8 @@ uint8_t STL_file::read()
         vertex v1, v2, v3;
 
         surface = new facet[numberOfFacets];
+		surface_normals = new vertex[numberOfFacets];
+		useFacet = new uint8_t[numberOfFacets];
 
         while (bufptr < buffer + size) {
 
@@ -78,21 +80,21 @@ uint8_t STL_file::read()
             v3.z = * (float * )(bufptr + 8);
             bufptr += 12;
 
-            //const float eps = (float) 1.0e-9;
+			if(doSimplify){
+				float angle = acos(-normal.z / (sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2)))) * 180.0f / PI;
+				if(angle > 90 && angle < 270) {
+					useFacet[nFacet] = 1;
+				}
+				else {
+					useFacet[nFacet] = 0;
+				}
+			}
+			else {
+				useFacet[nFacet] = 1;
+			}
 
-            /*if (abs(normal.x) < eps && abs(normal.y) < eps && abs(normal.z) < eps) {
-            	vertex u, v;
-            	u = v2 - v1;
-            	v = v3 - v1;
-            	normal = u ^ v;
-            	unit(normal);
-            }*/
-
-            surface[nFacet] = {
-                v1,
-                v2,
-                v3
-            };
+            surface[nFacet] = {v1, v2, v3};
+			surface_normals[nFacet] = normal;
 
             nFacet++;
 
@@ -113,29 +115,35 @@ uint8_t STL_file::read()
             lines++;
         }
         cout << "[Info]: " << lines << " lines in STL to process." << endl;
+		
         myStream.clear();
         myStream.seekg(0,ios::beg);
 
         while (getline(myStream, thisline)) {
             if(thisline.contains("facet normal")) {
-                if(regex_search(thisline, match_xyz, find_xyz)) {
-                    normal.x = stof(match_xyz[1].str());
-                    normal.y = stof(match_xyz[2].str());
-                    normal.z = stof(match_xyz[3].str());
-                }
                 numberOfFacets++;
             }
         }
-
-        myStream.clear();
+				
+		myStream.clear();
         myStream.seekg(0,ios::beg);
-
+		
         vertex v1, v2, v3;
         surface = new facet[numberOfFacets];
+		surface_normals = new vertex[numberOfFacets];	
+		useFacet = new uint8_t[numberOfFacets];
 
         char nextFacet = '0';
 
         while (getline(myStream, thisline)) {
+			if(thisline.contains("facet normal")) {
+                if(regex_search(thisline, match_xyz, find_xyz)) {
+                    normal.x = stof(match_xyz[1].str());
+                    normal.y = stof(match_xyz[2].str());
+                    normal.z = stof(match_xyz[3].str());
+					surface_normals[nFacet] = normal;
+                }
+            }
             if(thisline.contains("outer loop")) {
                 nextFacet = '1';
             }
@@ -163,6 +171,18 @@ uint8_t STL_file::read()
                 }
             }
             if(thisline.contains("endloop")) {
+				if(doSimplify){
+					float angle = acos(-normal.z / (sqrt(pow(normal.x, 2) + pow(normal.y, 2) + pow(normal.z, 2)))) * 180.0f / PI;
+					if(angle > 90 && angle < 270) {
+						useFacet[nFacet] = 1;
+					}
+					else {
+						useFacet[nFacet] = 0;
+					}
+				}
+				else {
+					useFacet[nFacet] = 1;
+				}
                 surface[nFacet] = {
                     v1,
                     v2,

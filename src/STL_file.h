@@ -10,11 +10,13 @@
 #include <cstdint>
 #include <regex>
 
+#define PI 3.14159265
+
 class STL_file
 {
 public:
 
-    STL_file(std::string filename);
+    STL_file(std::string filename, uint8_t simplify = 0);
 
     ~STL_file();
 
@@ -35,6 +37,10 @@ public:
     };
 
     facet * surface;
+	
+	vertex * surface_normals;
+	
+	uint8_t * useFacet;
 
 private:
 
@@ -53,6 +59,8 @@ private:
     char * buffer;
 
     char * bufptr;
+	
+	uint8_t doSimplify;
 
 };
 
