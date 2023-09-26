@@ -56,7 +56,7 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 		pointsOutside++;
     }
 	else if(validIntersections == 0 && above > 0) {
-		cerr << "[Error]: STL model out of positive z-range. Possibility of laser crash. Exiting." << endl;
+		cerr << "[Error]: STL model within positive z-range. Possibility of laser crash. Exiting." << endl;
 		exit(1);
 	}
 	else if(validIntersections == 0 && above == 0 && below > 0) {
