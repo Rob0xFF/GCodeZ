@@ -5,7 +5,7 @@ using namespace std;
 DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 {
     mySTL_file = stlFile;
-	laserDiameter = diameter;
+    laserDiameter = diameter;
 }
 
 DistanceCalculator::~DistanceCalculator()
@@ -44,9 +44,9 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
     }
     dist = mindist;
     //cout << "Found intersection at distance of " << mindist << endl;
-	if(numberofintersections == 0) {
-		dist = 45.0f;
-	}
+    if(numberofintersections == 0) {
+        dist = 45.0f;
+    }
     return numberofintersections;
 }
 
@@ -55,8 +55,8 @@ float DistanceCalculator::calculateLaserDistance()
     return -dist + 45.0f - (-4.5584f * laserDiameter + 34.71f);  // might come from config file in the future ....
 }
 
-/* 
-	adapted from Tomas Möller & Ben Trumbore (1997) Fast, Minimum Storage Ray-Triangle Intersection, Journal of Graphics Tools, 2:1, 21-28, DOI: 10.1080/10867651.1997.10487468 
+/*
+	adapted from Tomas Möller & Ben Trumbore (1997) Fast, Minimum Storage Ray-Triangle Intersection, Journal of Graphics Tools, 2:1, 21-28, DOI: 10.1080/10867651.1997.10487468
 */
 uint8_t DistanceCalculator::moellerTrumbore(float orig[3], float vert0[3], float vert1[3], float vert2[3])
 {

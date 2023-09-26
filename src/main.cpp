@@ -19,8 +19,8 @@ int main(int argc, char* argv[])
     string stl_file;
     string gcode_file;
     string output_file;
-	float stepwith_value = 0.0f;
-	float laser_value = 0.0f;
+    float stepwith_value = 0.0f;
+    float laser_value = 0.0f;
     int simplify_flag;
 
     int c;
@@ -33,8 +33,8 @@ int main(int argc, char* argv[])
             {"stl", required_argument, 0, 0},
             {"gcode", required_argument, 0, 0},
             {"output", required_argument, 0, 0},
-			{"laser", required_argument, 0, 0},
-			{"stepwith", optional_argument, 0, 0},
+            {"laser", required_argument, 0, 0},
+            {"stepwith", optional_argument, 0, 0},
             {"simplify", no_argument, 0, 0},
             {0, 0, 0, 0}
         };
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
         cerr << "[Error]: No Output-file defined, define with --output=output_filename" << endl;
         exit_val++;
     }
-	 if(laser_value < 0.05f) {
+    if(laser_value < 0.05f) {
         cerr << "[Error]: No or invalid laser diameter defined, must be >= 0.05, define with --laser=laser_diameter" << endl;
         exit_val++;
     }
@@ -90,20 +90,19 @@ int main(int argc, char* argv[])
     DistanceCalculator myDistanceCalculator = DistanceCalculator(&mySTL, laser_value);
 
     gCodeFileTranslator myGCode = gCodeFileTranslator(gcode_file, output_file, &mySTL, &myDistanceCalculator);
-	
-	if(stepwith_value > 0.0f) {
-		myGCode.setMinStep(stepwith_value);
-	}
-	
+
+    if(stepwith_value > 0.0f) {
+        myGCode.setMinStep(stepwith_value);
+    }
+
     if(!myGCode.read()) {
-		myGCode.addZ();
-	}
-	else {
-		cerr << "[EXIT]: No GCodeFile found" << endl;
-		exit(1);
-	}
-	
-	cout << "[Info]: Success! Exiting." << endl;
+        myGCode.addZ();
+    } else {
+        cerr << "[EXIT]: No GCodeFile found" << endl;
+        exit(1);
+    }
+
+    cout << "[Info]: Success! Exiting." << endl;
 
     return 0;
 }

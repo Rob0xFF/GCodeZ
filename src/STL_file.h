@@ -5,8 +5,10 @@
 #include <math.h>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <cstring>
 #include <cstdint>
+#include <regex>
 
 class STL_file
 {
@@ -37,6 +39,8 @@ public:
 private:
 
     uint8_t isBinary();
+
+	uint8_t is_binary;
 
     std::string myFile;
 
