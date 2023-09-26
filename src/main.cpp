@@ -1,0 +1,109 @@
+#include <iostream>
+#include <math.h>
+#include <fstream>
+#include <string>
+#include <cstring>
+#include <cstdint>
+#include <sstream>
+#include <regex>
+#include <getopt.h>
+
+#include "STL_file.h"
+#include "distance_calculator.h"
+#include "gcode_file_translator.h"
+
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+    string stl_file;
+    string gcode_file;
+    string output_file;
+	float stepwith_value = 0.0f;
+	float laser_value = 0.0f;
+    int simplify_flag;
+
+    int c;
+    int digit_optind = 0;
+
+    while (1) {
+        int this_option_optind = optind ? optind : 1;
+        int option_index = 0;
+        static struct option long_options[] = {
+            {"stl", required_argument, 0, 0},
+            {"gcode", required_argument, 0, 0},
+            {"output", required_argument, 0, 0},
+			{"laser", required_argument, 0, 0},
+			{"stepwith", optional_argument, 0, 0},
+            {"simplify", no_argument, 0, 0},
+            {0, 0, 0, 0}
+        };
+
+        c = getopt_long(argc, argv, "",
+                        long_options, &option_index);
+        if (c == -1)
+            break;
+
+        switch (c) {
+        case 0:
+            if (optarg)
+                if(long_options[option_index].name == "stl") {
+                    stl_file = optarg;
+                } else if (long_options[option_index].name == "gcode") {
+                    gcode_file = optarg;
+                } else if(long_options[option_index].name == "output") {
+                    output_file = optarg;
+                } else if(long_options[option_index].name == "laser") {
+                    laser_value = stof(optarg);
+                } else if(long_options[option_index].name == "stepwith") {
+                    stepwith_value = stof(optarg);
+                }
+            break;
+        }
+    }
+
+    int exit_val = 0;
+    if(stl_file.empty()) {
+        cerr << "[Error]: No STL-file defined, define with --stl=stl_filename" << endl;
+        exit_val++;
+    }
+    if(gcode_file.empty()) {
+        cerr << "[Error]: No GCode-file defined, define with --gcode=gcode_filename" << endl;
+        exit_val++;
+    }
+    if(output_file.empty()) {
+        cerr << "[Error]: No Output-file defined, define with --output=output_filename" << endl;
+        exit_val++;
+    }
+	 if(laser_value < 0.05f) {
+        cerr << "[Error]: No or invalid laser diameter defined, must be >= 0.05, define with --laser=laser_diameter" << endl;
+        exit_val++;
+    }
+    if(exit_val > 0) {
+        cerr << "[EXIT]: " << exit_val << " arguments missing." << endl;
+        exit(exit_val);
+    }
+
+    STL_file mySTL = STL_file(stl_file);
+    mySTL.read();
+
+    DistanceCalculator myDistanceCalculator = DistanceCalculator(&mySTL, laser_value);
+
+    gCodeFileTranslator myGCode = gCodeFileTranslator(gcode_file, output_file, &mySTL, &myDistanceCalculator);
+	
+	if(stepwith_value > 0.0f) {
+		myGCode.setMinStep(stepwith_value);
+	}
+	
+    if(!myGCode.read()) {
+		myGCode.addZ();
+	}
+	else {
+		cerr << "[EXIT]: No GCodeFile found" << endl;
+		exit(1);
+	}
+	
+	cout << "[Info]: Success! Exiting." << endl;
+
+    return 0;
+}
