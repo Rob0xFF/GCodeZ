@@ -44,18 +44,19 @@ int main(int argc, char * argv[])
 
 		switch (c) {
 			case 0:
-				if (optarg)
-					if(long_options[option_index].name == "stl") {
+				if (optarg) {
+					if(strcmp(long_options[option_index].name, "stl") == 0) {
 						stl_file = optarg;
-					} else if (long_options[option_index].name == "gcode") {
+					} else if(strcmp(long_options[option_index].name, "gcode") == 0) {
 						gcode_file = optarg;
-					} else if(long_options[option_index].name == "output") {
+					} else if(strcmp(long_options[option_index].name, "output") == 0) {
 						output_file = optarg;
-					} else if(long_options[option_index].name == "laser") {
+					} else if(strcmp(long_options[option_index].name, "laser") == 0) {
 						laser_value = stof(optarg);
-					} else if(long_options[option_index].name == "stepwidth") {
+					} else if(strcmp(long_options[option_index].name, "stepwidth") == 0) {
 						stepwidth_value = stof(optarg);
 					}
+				}
 
 				break;
 		}

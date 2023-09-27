@@ -2,3 +2,4 @@
 *.exe
 *.nc
 *.stl
+.DS_Store

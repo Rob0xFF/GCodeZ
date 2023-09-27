@@ -195,7 +195,7 @@ uint8_t STL_file::isBinary()
 	size_t spnsz, spnsz0;
 	spnsz = strspn(buffer, " ");
 	char ctstr[6];
-	strncpy_s(ctstr, & buffer[spnsz], 5);
+	strncpy(ctstr, & buffer[spnsz], 5);
 	ctstr[5] = '\0';
 	char csolid[] = "solid\0";
 
@@ -210,7 +210,7 @@ uint8_t STL_file::isBinary()
 			spnsz = strcspn(pch + spnsz0, " ");
 
 			if (spnsz == 5) {
-				strncpy_s(ctstr, pch + spnsz0, 5);
+				strncpy(ctstr, pch + spnsz0, 5);
 				ctstr[5] = '\0';
 				char cfacet[] = "facet\0";
 
