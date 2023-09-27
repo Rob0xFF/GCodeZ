@@ -19,3 +19,4 @@ It utilizes std::string.contains(), hence the -std=c++2b compiler flag needs to 
  
 ## GUI
 A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.
+![GUI](https://github.com/Rob0xFF/GCodeZ/blob/main/gui.png?raw=true)
