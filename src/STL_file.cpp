@@ -15,6 +15,7 @@ STL_file::STL_file(string filename, uint8_t simplify)
 
 STL_file::~STL_file()
 {
+	
 }
 
 uint8_t STL_file::read()
@@ -39,8 +40,6 @@ uint8_t STL_file::read()
 		cout << "[Info]: STL file seems to be binary: " << myFile << endl;
 		is_binary = 1;
 	}
-
-	uint32_t nFacet = 0;
 
 	if(is_binary) {
 		bufptr = buffer;
@@ -223,4 +222,26 @@ uint8_t STL_file::isBinary()
 	}
 
 	return (bbinary);
+}
+
+void STL_file::setXRange(float * xRange)
+{
+	if(doSimplify) {
+		for (uint32_t i = 0; i < nFacet; i++) {
+			if((surface[i].vertex1.x < 0.0f && surface[i].vertex2.x < 0.0f && surface[i].vertex3.x < 0.0f) || (surface[i].vertex1.x > xRange[1] + 0.5f && surface[i].vertex2.x > xRange[1] + 0.5f && surface[i].vertex3.x > xRange[1] + 0.5f)){
+				useFacet[i] = 0;
+			}
+		}
+	}
+}
+
+void STL_file::setYRange(float * yRange)
+{
+	if(doSimplify) {
+		for (uint32_t i = 0; i < nFacet; i++) {
+			if((surface[i].vertex1.y < 0.0f && surface[i].vertex2.y < 0.0f && surface[i].vertex3.y < 0.0f) || (surface[i].vertex1.y > yRange[1] + 0.5f && surface[i].vertex2.y > yRange[1] + 0.5f && surface[i].vertex3.y > yRange[1] + 0.5f)){
+				useFacet[i] = 0;
+			}
+		}
+	}
 }

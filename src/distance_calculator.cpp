@@ -52,17 +52,17 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 		}
 
 		dist = mindist;
-
-		if(validIntersections == 0 && above == 0 && below == 0) {
-			dist = maxZ;
-			pointsOutside++;
-		} else if(validIntersections == 0 && above > 0) {
-			cerr << "[Error]: The STL model is within the positive z-range, which poses a risk of a laser collision. Exiting to prevent potential damage." << endl;
-			exit(1);
-		} else if(validIntersections == 0 && above == 0 && below > 0) {
-			dist = maxZ; // clip distance
-			pointsTooLow++;
-		}
+	}
+	
+	if(validIntersections == 0 && above == 0 && below == 0) {
+		dist = maxZ;
+		pointsOutside++;
+	} else if(validIntersections == 0 && above > 0) {
+		cerr << "[Error]: The STL model is within the positive z-range, which poses a risk of a laser collision. Exiting to prevent potential damage." << endl;
+		exit(1);
+	} else if(validIntersections == 0 && above == 0 && below > 0) {
+		dist = maxZ; // clip distance
+		pointsTooLow++;
 	}
 
 	return validIntersections;

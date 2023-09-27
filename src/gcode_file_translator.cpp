@@ -58,19 +58,38 @@ uint8_t gCodeFileTranslator::addZ()
 	myStream.clear();
 	myStream.seekg(0, ios::beg);
 	regex gCode("(G[0]?[0,1])\\s");
+	regex range("([-]?[0-9]*\\.?[0-9]+)\\s*\\.*\\s*([-]?[0-9]*\\.?[0-9]+)");
 	regex coordX("X([-]?[0-9]*\\.?[0-9]+)");
 	regex coordY("Y([-]?[0-9]*\\.?[0-9]+)");
 	regex feedRate("F[-]?[0-9]*\\.?[0-9]+");
-	smatch matchG, matchX, matchY, matchF;
+	smatch matchG, matchRange, matchX, matchY, matchF;
 	float thisX, thisY, lastX = 0.0f, lastY = 0.0f;
 	ofstream out(myOutputFile);
 	uint32_t line = 0;
 	uint8_t passed[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	uint8_t index = 0;
+	float xRange[2] = {0.0f, 0.0f};
+	float yRange[2] = {0.0f, 0.0f};
 	cout << "[Info]: Processing .. 0%" << endl;
 
 	while (getline(myStream, thisline)) {
 		line++;
+		
+		if (thisline.contains("X range:")) {
+			if(regex_search(thisline, matchRange, range)){
+				xRange[0] = stof(matchRange[1].str());
+				xRange[1] = stof(matchRange[2].str());
+				mySTL_file->setXRange(xRange);
+			}
+		}
+		
+		if (thisline.contains("Y range:")) {
+			if(regex_search(thisline, matchRange, range)){
+				yRange[0] = stof(matchRange[1].str());
+				yRange[1] = stof(matchRange[2].str());
+				mySTL_file->setYRange(yRange);
+			}
+		}
 
 		if((float) line / (float) lines >= ((float) index + 1.0f) / 10.0f && passed[index] == 0) {
 			cout << "[Info]: Processing .. " << 10.0f * ((float) index + 1.0) << " %" << endl;
@@ -133,11 +152,11 @@ uint8_t gCodeFileTranslator::addZ()
 	out.close();
 
 	if(myCalc->pointsOutside) {
-		cout << "[Warning]: Found " << myCalc->pointsOutside << " points with no intersection with the surface. Clipped to the machine bed. Please verify." << endl;
+		cout << "[Warning]: Found " << myCalc->pointsOutside << " points with no intersection with the surface. Please verify." << endl;
 	}
 
 	if(myCalc->pointsTooLow) {
-		cout << "[Warning]: Found " << myCalc->pointsTooLow << " points below z-axis range. Clipped to machine bed. Please verify." << endl;
+		cout << "[Warning]: Found " << myCalc->pointsTooLow << " points below z-axis range. Please verify." << endl;
 	}
 
 	cout << "[Info]: Written output file " << myOutputFile << endl;

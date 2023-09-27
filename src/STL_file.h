@@ -21,6 +21,10 @@ class STL_file
 		~STL_file();
 
 		uint8_t read();
+		
+		void setXRange(float * xRange);
+		
+		void setYRange(float * yRange);
 
 		uint32_t numberOfFacets = 0;
 
@@ -43,6 +47,8 @@ class STL_file
 		uint8_t * useFacet;
 
 	private:
+	
+		uint32_t nFacet = 0;
 
 		uint8_t isBinary();
 
