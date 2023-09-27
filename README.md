@@ -16,6 +16,9 @@ A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl f
 
 ## Build
 It utilizes std::string.contains(), hence the -std=c++2b compiler flag needs to be provided to g++.
+```
+g++ -std=c++2b gcode_file_translator.cpp distance_calculator.cpp STL_file.cpp main.cpp -o gcodeZ.exe
+```
  
 ## GUI
 A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.
