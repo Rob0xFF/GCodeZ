@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
 	string stl_file;
 	string gcode_file;
 	string output_file;
-	float stepwith_value = 0.0f;
+	float stepwidth_value = 0.0f;
 	float laser_value = 0.0f;
 	int simplify_flag = 0;
 	int c;
@@ -33,7 +33,7 @@ int main(int argc, char * argv[])
 			{"gcode", required_argument, 0, 0},
 			{"output", required_argument, 0, 0},
 			{"laser", required_argument, 0, 0},
-			{"stepwith", optional_argument, 0, 0},
+			{"stepwidth", optional_argument, 0, 0},
 			{"simplify", no_argument, &simplify_flag, 1},
 			{0, 0, 0, 0}
 		};
@@ -53,8 +53,8 @@ int main(int argc, char * argv[])
 						output_file = optarg;
 					} else if(long_options[option_index].name == "laser") {
 						laser_value = stof(optarg);
-					} else if(long_options[option_index].name == "stepwith") {
-						stepwith_value = stof(optarg);
+					} else if(long_options[option_index].name == "stepwidth") {
+						stepwidth_value = stof(optarg);
 					}
 
 				break;
@@ -93,8 +93,8 @@ int main(int argc, char * argv[])
 	DistanceCalculator myDistanceCalculator = DistanceCalculator(&mySTL, laser_value);
 	gCodeFileTranslator myGCode = gCodeFileTranslator(gcode_file, output_file, &mySTL, &myDistanceCalculator);
 
-	if(stepwith_value > 0.0f) {
-		myGCode.setMinStep(stepwith_value);
+	if(stepwidth_value > 0.0f) {
+		myGCode.setMinStep(stepwidth_value);
 	}
 
 	if(!myGCode.read()) {

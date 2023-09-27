@@ -1,8 +1,8 @@
 import sys
 import os
 import subprocess
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QDoubleSpinBox, QTextEdit
-from PyQt5.QtCore import QProcess, QTextCodec, QByteArray
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QDoubleSpinBox, QTextEdit, QCheckBox
+from PyQt5.QtCore import QProcess, QTextCodec, QByteArray, Qt
 
 
 class GCodeConverterApp(QWidget):
@@ -15,8 +15,8 @@ class GCodeConverterApp(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("G-Code Converter")
-        self.setGeometry(100, 100, 400, 200)
+        self.setWindowTitle("GCodeZ - G-Code Converter")
+        self.setGeometry(100, 100, 400, 500)
 
         self.stl_label = QLabel("Choose STL file:")
         self.stl_button = QPushButton("Browse")
@@ -36,6 +36,16 @@ class GCodeConverterApp(QWidget):
         self.laser_spinbox.setSingleStep(0.01)
         self.laser_spinbox.setValue(0.05)
 		
+        self.stepwidth_label = QLabel("Set stepwith (0.1 - 5.0):")
+        self.stepwidth_spinbox = QDoubleSpinBox()
+        self.stepwidth_spinbox.setRange(0.1, 5.0)
+        self.stepwidth_spinbox.setSingleStep(0.1)
+        self.stepwidth_spinbox.setValue(0.5)
+		
+        self.simplify_label = QLabel("Simplify STL:")
+        self.simplify_checkbox = QCheckBox("Simplifiy STL")
+        self.simplify_checkbox.setCheckState(Qt.Unchecked)
+		
         self.execute_button = QPushButton("Execute")
         self.execute_button.clicked.connect(self.executeCommand)
 
@@ -50,6 +60,10 @@ class GCodeConverterApp(QWidget):
         vbox.addWidget(self.output_button)
         vbox.addWidget(self.laser_label)
         vbox.addWidget(self.laser_spinbox)
+        vbox.addWidget(self.stepwidth_label)
+        vbox.addWidget(self.stepwidth_spinbox)
+        #vbox.addWidget(self.simplify_label)
+        vbox.addWidget(self.simplify_checkbox)
         vbox.addWidget(self.execute_button)
         vbox.addWidget(self.log_text)
 
@@ -80,19 +94,26 @@ class GCodeConverterApp(QWidget):
             self.output_file = fileName
 
     def executeCommand(self):
+
+        self.log_text.clear()
+	
         stl_file = self.stl_file
         gcode_file = self.gcode_file
         output_file = self.output_file
         laser_diameter = self.laser_spinbox.value()
+        stepwidth = self.stepwidth_spinbox.value()
 		
         # Replace this with the actual conversion code
-        print(f"Converting STL to G-code with laser diameter {laser_diameter}...")
-        print(f"STL File: {stl_file}")
-        print(f"G-code File: {gcode_file}")
-        print(f"Output File: {output_file}")
+        #print(f"Converting STL to G-code with laser diameter {laser_diameter}...")
+        #print(f"STL File: {stl_file}")
+        #print(f"G-code File: {gcode_file}")
+        #print(f"Output File: {output_file}")
 
         # Replace this with the actual command to execute
-        command = f"gcodeZ.exe --stl={stl_file} --gcode={gcode_file} --output={output_file} --laser={laser_diameter}"
+        command = f"gcodeZ.exe --stl={stl_file} --gcode={gcode_file} --output={output_file} --laser={laser_diameter} --stepwidth={stepwidth}"
+		
+        if(self.simplify_checkbox.isChecked()):
+            command += " --simplify"
 
         try:
             # Set the working directory for the process
