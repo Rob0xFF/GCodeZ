@@ -1,0 +1,10 @@
+ -n 
+ --indent=tab 
+ --indent-classes 
+ --indent-switches 
+ --break-blocks 
+ --pad-oper 
+ --pad-comma 
+ --delete-empty-lines 
+ --align-pointer=middle 
+ --style=kr
