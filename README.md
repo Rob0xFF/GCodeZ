@@ -1,5 +1,5 @@
 # GCodeZ
-A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl file. It will add z-coordinates to each liner movement command (G00 and G01). If the distance between two points within the xy-plane exceeds the value given by stepwith, the linear path will be split up to allow precise laser path tracking along the surface. 
+A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl file. It will add z-coordinates to each linear movement command (G00 and G01). If the distance between two points within the xy-plane exceeds the value given by stepwith, the linear path will be split up to allow precise laser path tracking along the surface. 
 ## Required Command Line Options: 
  **--stl=stl_file** The STL file can be either binary or ASCII format.
  
