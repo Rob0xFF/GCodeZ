@@ -52,9 +52,23 @@ int main(int argc, char * argv[])
 					} else if(strcmp(long_options[option_index].name, "output") == 0) {
 						output_file = optarg;
 					} else if(strcmp(long_options[option_index].name, "laser") == 0) {
-						laser_value = stof(optarg);
+						try {
+							laser_value = stof(optarg);
+						} catch (const invalid_argument & e) {
+							cerr << "[Error]: Argument for laser is not a valid float. Use --laser=diameter, where diameter is a valid floating point number. Exit." << endl;
+							exit(1);
+						} catch (const out_of_range & e) {
+							cerr << "[Error]: Argument for laser is not a valid float. Use --laser=diameter, where diameter is a valid floating point number. Exit." << endl;
+							exit(1);
+						}
 					} else if(strcmp(long_options[option_index].name, "stepwidth") == 0) {
-						stepwidth_value = stof(optarg);
+						try {
+							stepwidth_value = stof(optarg);
+						} catch (const invalid_argument & e) {
+							cout << "[Warning]: Argument for stepwidth is not a valid float. Using default value." << endl;
+						} catch (const out_of_range & e) {
+							cout << "[Warning]: Argument for stepwidth is not a valid float. Using default value." << endl;
+						}
 					}
 				}
 

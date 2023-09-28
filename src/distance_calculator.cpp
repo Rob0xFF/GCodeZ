@@ -6,6 +6,44 @@ DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 {
 	mySTL_file = stlFile;
 	laserDiameter = diameter;
+	config.open("laserCalibration.cfg");
+
+	if(!config) {
+		cout << "[Warning]: Missing configuration file: laserCalibration.cfg, using default values." << endl;
+	} else {
+		string thisline;
+
+		while(getline(config, thisline)) {
+			thisline.erase(remove_if(thisline.begin(), thisline.end(), ::isspace), thisline.end());
+
+			if(thisline[0] == '#' || thisline.empty())
+				continue;
+
+			auto delimiterPos = thisline.find("=");
+
+			if(!thisline.substr(0, delimiterPos).compare("cal1")) {
+				try {
+					cal1 = stof(thisline.substr(delimiterPos + 1));
+				} catch (const invalid_argument & e) {
+					cout << "[Warning]: Invalid input from config file. Using default value cal1 = " << cal1 << endl;
+				} catch (const out_of_range & e) {
+					cout << "[Warning]: Invalid input from config file. Using default value cal1 = " << cal1 << endl;
+				}
+			}
+			
+			if(!thisline.substr(0, delimiterPos).compare("cal2")) {
+				try {
+					cal2 = stof(thisline.substr(delimiterPos + 1));
+				} catch (const invalid_argument & e) {
+					cout << "[Warning]: Invalid input from config file. Using default value cal2 = " << cal2 << endl;
+				} catch (const out_of_range & e) {
+					cout << "[Warning]: Invalid input from config file. Using default value cal2 = " << cal2 << endl;
+				}
+			}
+		}
+	}
+
+	config.close();
 }
 
 DistanceCalculator::~DistanceCalculator()
@@ -53,7 +91,7 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 
 		dist = mindist;
 	}
-	
+
 	if(validIntersections == 0 && above == 0 && below == 0) {
 		dist = maxZ;
 		pointsOutside++;

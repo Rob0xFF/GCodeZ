@@ -7,6 +7,7 @@
 #include <string>
 #include <cstring>
 #include <cstdint>
+#include <algorithm>
 
 #include "STL_file.h"
 
@@ -47,11 +48,17 @@ class DistanceCalculator
 		uint32_t pointsTooLow = 0;
 
 		float laserDiameter = 0.0f;
-		float maxZ = -4.5584f * laserDiameter + 34.71f;  // may come from config file
+
+		float cal1 = -4.5584f;
+		float cal2 = 34.71f;
+
+		float maxZ = cal1 * laserDiameter + cal2;
 
 	private:
 
 		STL_file * mySTL_file;
+
+		std::ifstream config;
 
 		float * myOrig;
 
@@ -69,7 +76,6 @@ class DistanceCalculator
 		float dist;
 		float mindist = 1000.0f;
 		uint8_t validIntersections = 0;
-
 
 		float laserDist = 0.0f;
 

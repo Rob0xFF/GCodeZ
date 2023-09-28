@@ -1,0 +1,4 @@
+# parameters of the linear fit assigning the laser diameter on the machine bed to the respective magnitude of z value
+# |z| = cal1 * diameter + cal2
+cal1=-4.5584
+cal2=34.71

@@ -74,17 +74,17 @@ uint8_t gCodeFileTranslator::addZ()
 
 	while (getline(myStream, thisline)) {
 		line++;
-		
+
 		if (thisline.contains("X range:")) {
-			if(regex_search(thisline, matchRange, range)){
+			if(regex_search(thisline, matchRange, range)) {
 				xRange[0] = stof(matchRange[1].str());
 				xRange[1] = stof(matchRange[2].str());
 				mySTL_file->setXRange(xRange);
 			}
 		}
-		
+
 		if (thisline.contains("Y range:")) {
-			if(regex_search(thisline, matchRange, range)){
+			if(regex_search(thisline, matchRange, range)) {
 				yRange[0] = stof(matchRange[1].str());
 				yRange[1] = stof(matchRange[2].str());
 				mySTL_file->setYRange(yRange);
@@ -92,12 +92,12 @@ uint8_t gCodeFileTranslator::addZ()
 		}
 
 		if((float) line / (float) lines >= ((float) index + 1.0f) / 10.0f && passed[index] == 0) {
-			cout << "[Info]: Processing .. " << 10.0f * ((float) index + 1.0) << " %" << endl;
+			cout << "[Info]: Processing .. " << 10.0f * ((float) index + 1.0) << "%" << endl;
 			passed[index] = 1;
 			index++;
 		}
 
-		if (thisline.contains("G00") || thisline.contains("G01")) {
+		if (thisline.contains("G00 ") || thisline.contains("G01 ") || thisline.contains("G0 ") || thisline.contains("G1 ")) {
 			string gCodeValue = "";
 			string feedRateValue = "";
 			string xValue = "";
