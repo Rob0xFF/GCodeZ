@@ -4,6 +4,15 @@ A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl f
 The machine coodinates are right-handed, where allowed values of x and y are positive and z is negative. When z = 0, the laser is at its highest possible point. The maximum z value is calculated using the laser diameter and the calibration line, representing an exposure of the machine bed with the specified diameter. The workpiece coordinates (from STL) are right handed, where x, y and z are positive. If the workpiece at any point given in the 2D GCode is higher than the maximum z value, the conversion stops in order to prevent a collision of the laser with the workpiece. If parts of the STL workpiece are below the machine bed, a warning is emitted and z magnitude is clipped to max z. If parts of the 2D GCode protrude the workpiece, a warning is emitted and z magnitude is clipped to max z, again.
 
 ![coord](https://github.com/Rob0xFF/GCodeZ/blob/main/coordinates.png?raw=true)
+## Laser Calibration
+The laser must be calibrated with respect to the spot size on the machine bed, depending on the z-height. The magnitude of the z-height is expressed by the following linear equation **|z| = cal1 * diameter + cal2**. Please specify the two parameters in the "laserCalibration.cfg" configuration file in the format 
+```
+# This line will be ignored
+cal1=<float>
+cal2=<float>
+```
+as valid floating-point numbers. Lines beginning with # at the start will be ignored. If no parameters can be read, a warning will be issued, and the default values will be used for calculations. 
+
 ## Required Command Line Options: 
  **--stl=stl_file** The STL file can be either binary or ASCII format.
  
