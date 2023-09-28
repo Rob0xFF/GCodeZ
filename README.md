@@ -41,6 +41,6 @@ A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.
 ![GUI](https://github.com/Rob0xFF/GCodeZ/blob/main/gui.png?raw=true)
 
 ## Credits
-	Parts of the code in STL_file.cpp (C) Jerry Greenough, used and published with friendly permission. [Source](https://jgxsoft.com/examples/STL%20Reader/STL%20Reader.html)
+Parts of the code in STL_file.cpp (C) Jerry Greenough, used and published with friendly permission. [Source](https://jgxsoft.com/examples/STL%20Reader/STL%20Reader.html)
  
- The intersection algorithm was adapted from Tomas Möller & Ben Trumbore (1997) Fast, Minimum Storage Ray-Triangle Intersection, Journal of Graphics Tools, 2:1, 21-28, [DOI: 10.1080/10867651.1997.10487468](https://doi.org/10.1080/10867651.1997.10487468)
+The intersection algorithm was adapted from *Tomas Möller & Ben Trumbore (1997) Fast, Minimum Storage Ray-Triangle Intersection, Journal of Graphics Tools, 2:1, 21-28* [DOI: 10.1080/10867651.1997.10487468](https://doi.org/10.1080/10867651.1997.10487468)
