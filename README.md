@@ -10,10 +10,10 @@ The machine coodinates are right-handed, where allowed values of x and y are pos
 The laser must be calibrated with respect to the spot size on the machine bed, depending on the z-height. The magnitude of the z-height is expressed by the following linear equation **|z| = cal1 * diameter + cal2**, where **z** and **diameter** are given in mm. Please specify the two parameters in the "laserCalibration.cfg" configuration file in the format 
 ```
 # This line will be ignored
-cal1=<float>
-cal2=<float>
+cal1=float
+cal2=float
 ```
-where <float> must be replaced by valid floating-point numbers. Lines beginning with # at the start will be ignored. If no parameters can be read, a warning will be issued, and the default values will be used for calculations. 
+where **float** must be replaced by valid floating-point numbers. Lines beginning with # at the start will be ignored. If no parameters can be read, a warning will be issued, and the default values will be used for calculations. 
 
 ## Required Command Line Options: 
  **--stl=stl_file** The STL file can be either binary or ASCII format.
