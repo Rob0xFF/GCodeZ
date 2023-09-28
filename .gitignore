@@ -6,3 +6,4 @@
 src/build/*
 src/gcodeZ_GUI.spec
 src/gcodeZ
+src/dist/gcodeZ_GUI
