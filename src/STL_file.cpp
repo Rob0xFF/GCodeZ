@@ -43,7 +43,7 @@ uint8_t STL_file::read()
 	if(is_binary) {
 		bufptr = buffer;
 		bufptr += 80;
-		numberOfFacets = * (uint32_t * )(bufptr);
+		numberOfFacets = * (uint32_t *)(bufptr);
 
 		if(size != 80 + 4 + numberOfFacets * (4 * 12 + 2)) {
 			cerr << "[Error]: STL File is not valid. Exit." << endl;
@@ -58,22 +58,22 @@ uint8_t STL_file::read()
 		surface_normals = new vertex[numberOfFacets];
 		useFacet = new uint8_t[numberOfFacets];
 
-		while (bufptr < buffer + size) {
-			normal.x = * (float * )(bufptr);
-			normal.y = * (float * )(bufptr + 4);
-			normal.z = * (float * )(bufptr + 8);
+		while(bufptr < buffer + size) {
+			normal.x = * (float *)(bufptr);
+			normal.y = * (float *)(bufptr + 4);
+			normal.z = * (float *)(bufptr + 8);
 			bufptr += 12;
-			v1.x = * (float * )(bufptr);
-			v1.y = * (float * )(bufptr + 4);
-			v1.z = * (float * )(bufptr + 8);
+			v1.x = * (float *)(bufptr);
+			v1.y = * (float *)(bufptr + 4);
+			v1.z = * (float *)(bufptr + 8);
 			bufptr += 12;
-			v2.x = * (float * )(bufptr);
-			v2.y = * (float * )(bufptr + 4);
-			v2.z = * (float * )(bufptr + 8);
+			v2.x = * (float *)(bufptr);
+			v2.y = * (float *)(bufptr + 4);
+			v2.z = * (float *)(bufptr + 8);
 			bufptr += 12;
-			v3.x = * (float * )(bufptr);
-			v3.y = * (float * )(bufptr + 4);
-			v3.z = * (float * )(bufptr + 8);
+			v3.x = * (float *)(bufptr);
+			v3.y = * (float *)(bufptr + 4);
+			v3.z = * (float *)(bufptr + 8);
 			bufptr += 12;
 
 			if(doSimplify) {
@@ -102,7 +102,7 @@ uint8_t STL_file::read()
 		smatch match_xyz;
 		uint32_t lines = 0;
 
-		while (getline(myStream, thisline)) {
+		while(getline(myStream, thisline)) {
 			if(thisline.contains("facet normal")) {
 				numberOfFacets++;
 			}
@@ -119,7 +119,7 @@ uint8_t STL_file::read()
 		useFacet = new uint8_t[numberOfFacets];
 		char nextFacet = '0';
 
-		while (getline(myStream, thisline)) {
+		while(getline(myStream, thisline)) {
 			if(thisline.contains("facet normal")) {
 				if(regex_search(thisline, match_xyz, find_xyz)) {
 					normal.x = stof(match_xyz[1].str());
@@ -199,22 +199,22 @@ uint8_t STL_file::isBinary()
 	ctstr[5] = '\0';
 	char csolid[] = "solid\0";
 
-	if (!strcmp(ctstr, csolid)) {
+	if(!strcmp(ctstr, csolid)) {
 		spnsz0 = 5 + spnsz;
-		char * pch = strchr( & buffer[spnsz0], '\n');
+		char * pch = strchr(& buffer[spnsz0], '\n');
 
-		if (pch) {
+		if(pch) {
 			pch++;
 			spnsz = strspn(pch, " ");
 			spnsz0 = spnsz;
 			spnsz = strcspn(pch + spnsz0, " ");
 
-			if (spnsz == 5) {
+			if(spnsz == 5) {
 				strncpy(ctstr, pch + spnsz0, 5);
 				ctstr[5] = '\0';
 				char cfacet[] = "facet\0";
 
-				if (!strcmp(ctstr, cfacet)) {
+				if(!strcmp(ctstr, cfacet)) {
 					bbinary = 0;
 				}
 			}
@@ -227,7 +227,7 @@ uint8_t STL_file::isBinary()
 void STL_file::setXRange(float * xRange)
 {
 	if(doSimplify) {
-		for (uint32_t i = 0; i < nFacet; i++) {
+		for(uint32_t i = 0; i < nFacet; i++) {
 			if((surface[i].vertex1.x < 0.0f && surface[i].vertex2.x < 0.0f && surface[i].vertex3.x < 0.0f) || (surface[i].vertex1.x > xRange[1] + 0.5f && surface[i].vertex2.x > xRange[1] + 0.5f && surface[i].vertex3.x > xRange[1] + 0.5f)) {
 				useFacet[i] = 0;
 			}
@@ -238,7 +238,7 @@ void STL_file::setXRange(float * xRange)
 void STL_file::setYRange(float * yRange)
 {
 	if(doSimplify) {
-		for (uint32_t i = 0; i < nFacet; i++) {
+		for(uint32_t i = 0; i < nFacet; i++) {
 			if((surface[i].vertex1.y < 0.0f && surface[i].vertex2.y < 0.0f && surface[i].vertex3.y < 0.0f) || (surface[i].vertex1.y > yRange[1] + 0.5f && surface[i].vertex2.y > yRange[1] + 0.5f && surface[i].vertex3.y > yRange[1] + 0.5f)) {
 				useFacet[i] = 0;
 			}

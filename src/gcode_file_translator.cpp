@@ -18,7 +18,7 @@ uint8_t gCodeFileTranslator::setMinStep(float minstep)
 {
 	myMinStep = minstep;
 
-	if (myMinStep <= 0.1f) {
+	if(myMinStep <= 0.1f) {
 		myMinStep = 0.1f;
 	}
 
@@ -50,7 +50,7 @@ uint8_t gCodeFileTranslator::addZ()
 	string thisline;
 	uint32_t lines = 0;
 
-	while (getline(myStream, thisline)) {
+	while(getline(myStream, thisline)) {
 		lines++;
 	}
 
@@ -72,10 +72,10 @@ uint8_t gCodeFileTranslator::addZ()
 	float yRange[2] = {0.0f, 0.0f};
 	cout << "[Info]: Processing .. 0%" << endl;
 
-	while (getline(myStream, thisline)) {
+	while(getline(myStream, thisline)) {
 		line++;
 
-		if (thisline.contains("X range:")) {
+		if(thisline.contains("X range:")) {
 			if(regex_search(thisline, matchRange, range)) {
 				xRange[0] = stof(matchRange[1].str());
 				xRange[1] = stof(matchRange[2].str());
@@ -83,7 +83,7 @@ uint8_t gCodeFileTranslator::addZ()
 			}
 		}
 
-		if (thisline.contains("Y range:")) {
+		if(thisline.contains("Y range:")) {
 			if(regex_search(thisline, matchRange, range)) {
 				yRange[0] = stof(matchRange[1].str());
 				yRange[1] = stof(matchRange[2].str());
@@ -97,7 +97,7 @@ uint8_t gCodeFileTranslator::addZ()
 			index++;
 		}
 
-		if (thisline.contains("G00 ") || thisline.contains("G01 ") || thisline.contains("G0 ") || thisline.contains("G1 ")) {
+		if(thisline.contains("G00 ") || thisline.contains("G01 ") || thisline.contains("G0 ") || thisline.contains("G1 ")) {
 			string gCodeValue = "";
 			string feedRateValue = "";
 			string xValue = "";
@@ -115,13 +115,13 @@ uint8_t gCodeFileTranslator::addZ()
 
 			uint8_t newCoord = 0;
 
-			if (regex_search(thisline, matchX, coordX)) {
+			if(regex_search(thisline, matchX, coordX)) {
 				xValue = matchX[1].str();
 				thisX = stof(xValue);
 				newCoord = 1;
 			}
 
-			if (regex_search(thisline, matchY, coordY)) {
+			if(regex_search(thisline, matchY, coordY)) {
 				yValue = matchY[1].str();
 				thisY = stof(yValue);
 				newCoord = 1;

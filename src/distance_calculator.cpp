@@ -24,7 +24,7 @@ DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 			if(!thisline.substr(0, delimiterPos).compare("cal1")) {
 				try {
 					cal1 = stof(thisline.substr(delimiterPos + 1));
-				} catch (...) {
+				} catch(...) {
 					cout << "[Warning]: Invalid input from config file. Using default value cal1 = " << cal1 << endl;
 				}
 			}
@@ -32,7 +32,7 @@ DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 			if(!thisline.substr(0, delimiterPos).compare("cal2")) {
 				try {
 					cal2 = stof(thisline.substr(delimiterPos + 1));
-				} catch (...) {
+				} catch(...) {
 					cout << "[Warning]: Invalid input from config file. Using default value cal2 = " << cal2 << endl;
 				}
 			}
@@ -54,7 +54,7 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 	uint8_t below = 0;
 	uint8_t above = 0;
 
-	for (uint32_t i = 0; i < mySTL_file->numberOfFacets; i++) {
+	for(uint32_t i = 0; i < mySTL_file->numberOfFacets; i++) {
 		if(mySTL_file->useFacet[i]) {
 			float vert0[3] = {
 				mySTL_file->surface[i].vertex1.x,
@@ -73,12 +73,12 @@ uint8_t DistanceCalculator::findNearestIntersection(float * origin)
 			};
 			uint8_t retVal = moellerTrumbore(myOrig, vert0, vert1, vert2);
 
-			if (retVal != 0) {
+			if(retVal != 0) {
 				if(intersect[2] < 0.0f) {
 					below++;
 				} else if(intersect[2] > maxZ) {
 					above++;
-				} else if (mindist > dist) {
+				} else if(mindist > dist) {
 					mindist = dist;
 					validIntersections++;
 				}
@@ -119,20 +119,20 @@ uint8_t DistanceCalculator::moellerTrumbore(float orig[3], float vert0[3], float
 	CROSS(pvec, dir, edge2);
 	det = DOT(edge1, pvec);
 
-	if (det > -EPSILON && det < EPSILON)
+	if(det > -EPSILON && det < EPSILON)
 		return 0;
 
 	inv_det = 1.0 / det;
 	SUB(tvec, orig, vert0);
 	u = DOT(tvec, pvec) * inv_det;
 
-	if ( u < 0.0 || u > 1.0)
+	if(u < 0.0 || u > 1.0)
 		return 0;
 
 	CROSS(qvec, tvec, edge1);
 	v = DOT(dir, qvec) * inv_det;
 
-	if ( v < 0.0 || u + v > 1.0)
+	if(v < 0.0 || u + v > 1.0)
 		return 0;
 
 	t = DOT(edge2, qvec) * inv_det;

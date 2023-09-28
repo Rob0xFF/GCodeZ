@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
 	int c;
 	int digit_optind = 0;
 
-	while (1) {
+	while(1) {
 		int this_option_optind = optind ? optind : 1;
 		int option_index = 0;
 		static struct option long_options[] = {
@@ -39,12 +39,12 @@ int main(int argc, char * argv[])
 		};
 		c = getopt_long(argc, argv, "", long_options, &option_index);
 
-		if (c == -1)
+		if(c == -1)
 			break;
 
-		switch (c) {
+		switch(c) {
 			case 0:
-				if (optarg) {
+				if(optarg) {
 					if(strcmp(long_options[option_index].name, "stl") == 0) {
 						stl_file = optarg;
 					} else if(strcmp(long_options[option_index].name, "gcode") == 0) {
@@ -54,14 +54,14 @@ int main(int argc, char * argv[])
 					} else if(strcmp(long_options[option_index].name, "laser") == 0) {
 						try {
 							laser_value = stof(optarg);
-						} catch (...) {
+						} catch(...) {
 							cerr << "[Error]: Argument for laser is not a valid float. Use --laser=diameter, where diameter is a valid floating point number. Exit." << endl;
 							exit(1);
 						}
 					} else if(strcmp(long_options[option_index].name, "stepwidth") == 0) {
 						try {
 							stepwidth_value = stof(optarg);
-						} catch (...) {
+						} catch(...) {
 							cout << "[Warning]: Argument for stepwidth is not a valid float. Using default value." << endl;
 						}
 					}

@@ -8,3 +8,4 @@
  --delete-empty-lines 
  --align-pointer=middle 
  --style=kr
+ --unpad-paren
