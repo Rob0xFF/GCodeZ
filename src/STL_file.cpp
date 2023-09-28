@@ -44,10 +44,12 @@ uint8_t STL_file::read()
 		bufptr = buffer;
 		bufptr += 80;
 		numberOfFacets = * (uint32_t * )(bufptr);
+
 		if(size != 80 + 4 + numberOfFacets * (4 * 12 + 2)) {
 			cerr << "[Error]: STL File is not valid. Exit." << endl;
 			exit(1);
 		}
+
 		cout << "[Info]: " << numberOfFacets << " facets to read from file." << endl;
 		bufptr += 4;
 		vertex normal;
@@ -104,11 +106,11 @@ uint8_t STL_file::read()
 			if(thisline.contains("facet normal")) {
 				numberOfFacets++;
 			}
+
 			lines++;
 		}
 
 		cout << "[Info]: " << lines << " lines in STL to process." << endl;
-
 		myStream.clear();
 		myStream.seekg(0, ios::beg);
 		vertex v1, v2, v3;

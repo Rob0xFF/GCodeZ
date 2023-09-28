@@ -113,34 +113,40 @@ uint8_t gCodeFileTranslator::addZ()
 				//cout << feedRateValue << endl;
 			}
 
+			uint8_t newCoord = 0;
+
 			if (regex_search(thisline, matchX, coordX)) {
 				xValue = matchX[1].str();
 				thisX = stof(xValue);
+				newCoord = 1;
+			}
 
-				if (regex_search(thisline, matchY, coordY)) {
-					yValue = matchY[1].str();
-					thisY = stof(yValue);
-					// we have to approach towards the next point with stepwidth
-					float distFromLastPoint = sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
+			if (regex_search(thisline, matchY, coordY)) {
+				yValue = matchY[1].str();
+				thisY = stof(yValue);
+				newCoord = 1;
+			}
 
-					while(distFromLastPoint > myMinStep) {
-						float norm = 1 / sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
-						lastX = lastX + myMinStep * (thisX - lastX) * norm;
-						lastY = lastY + myMinStep * (thisY - lastY) * norm;
-						float orig[3] = {lastX, lastY, myCalc->maxZ};
-						distFromLastPoint = sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
-						myCalc->findNearestIntersection(orig);
-						out << gCodeValue << " X" << lastX << " Y" << lastY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
-					}
+			if(newCoord) {
+				// we have to approach towards the next point with stepwidth
+				float distFromLastPoint = sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
 
-					float orig[3] = {thisX, thisY, myCalc->maxZ};
+				while(distFromLastPoint > myMinStep) {
+					float norm = 1 / sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
+					lastX = lastX + myMinStep * (thisX - lastX) * norm;
+					lastY = lastY + myMinStep * (thisY - lastY) * norm;
+					float orig[3] = {lastX, lastY, myCalc->maxZ};
+					distFromLastPoint = sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
 					myCalc->findNearestIntersection(orig);
-					out << gCodeValue << " X" << thisX << " Y" << thisY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
-					lastX = thisX;
-					lastY = thisY;
-				} else {
-					out << thisline << endl;
+					out << gCodeValue << " X" << lastX << " Y" << lastY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
 				}
+
+				float orig[3] = {thisX, thisY, myCalc->maxZ};
+				myCalc->findNearestIntersection(orig);
+				out << gCodeValue << " X" << thisX << " Y" << thisY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
+				lastX = thisX;
+				lastY = thisY;
+				newCoord = 0;
 			} else {
 				out << thisline << endl;
 			}
