@@ -3,7 +3,9 @@ A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl f
 
 The 2D-GCode might come from [Flatcam](https://bitbucket.org/jpcgt/flatcam/downloads/) in GRBL style.
 ## Coordinates
-The machine coodinates are right-handed, where allowed values of x and y are positive and z is negative. When z = 0, the laser is at its highest possible point. The maximum z value is calculated using the laser diameter and the calibration line, representing an exposure of the machine bed with the specified diameter. The workpiece coordinates (from STL) are right handed, where x, y and z are positive. If the workpiece at any point given in the 2D GCode is higher than the maximum z value, the conversion stops in order to prevent a collision of the laser with the workpiece. If parts of the STL workpiece are below the machine bed, a warning is emitted and z magnitude is clipped to max z. If parts of the 2D GCode protrude the workpiece, a warning is emitted and z magnitude is clipped to max z, again.
+The **machine coodinates** are right-handed, where allowed values of x and y are positive and z is negative. When z = 0, the laser is at its highest possible point. The maximum z value is calculated using the laser diameter and the calibration line, representing an exposure of the machine bed with the specified diameter. 
+
+The **workpiece coordinates** (from STL) are right handed, where x, y and z are positive. If the workpiece at any point given in the 2D GCode is higher than the maximum z value, the conversion stops in order to prevent a collision of the laser with the workpiece. If parts of the STL workpiece are below the machine bed, a warning is emitted and z magnitude is clipped to max z. If parts of the 2D GCode protrude the workpiece, a warning is emitted and z magnitude is clipped to max z, again.
 
 ![coord](https://github.com/Rob0xFF/GCodeZ/blob/main/coordinates.png?raw=true)
 ## Laser Calibration
