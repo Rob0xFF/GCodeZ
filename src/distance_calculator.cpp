@@ -24,19 +24,15 @@ DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 			if(!thisline.substr(0, delimiterPos).compare("cal1")) {
 				try {
 					cal1 = stof(thisline.substr(delimiterPos + 1));
-				} catch (const invalid_argument & e) {
-					cout << "[Warning]: Invalid input from config file. Using default value cal1 = " << cal1 << endl;
-				} catch (const out_of_range & e) {
+				} catch (...) {
 					cout << "[Warning]: Invalid input from config file. Using default value cal1 = " << cal1 << endl;
 				}
 			}
-			
+
 			if(!thisline.substr(0, delimiterPos).compare("cal2")) {
 				try {
 					cal2 = stof(thisline.substr(delimiterPos + 1));
-				} catch (const invalid_argument & e) {
-					cout << "[Warning]: Invalid input from config file. Using default value cal2 = " << cal2 << endl;
-				} catch (const out_of_range & e) {
+				} catch (...) {
 					cout << "[Warning]: Invalid input from config file. Using default value cal2 = " << cal2 << endl;
 				}
 			}
