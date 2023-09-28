@@ -1,5 +1,6 @@
 import sys
 import os
+import platform
 import subprocess
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFileDialog, QDoubleSpinBox, QTextEdit, QCheckBox
 from PyQt5.QtCore import QProcess, QTextCodec, QByteArray, Qt
@@ -8,6 +9,7 @@ from PyQt5.QtCore import QProcess, QTextCodec, QByteArray, Qt
 class GCodeConverterApp(QWidget):
     def __init__(self):
         super().__init__()
+        self.current_os = platform.system()
         self.stl_file = ""
         self.gcode_file = ""
         self.output_file = ""
@@ -109,8 +111,12 @@ class GCodeConverterApp(QWidget):
         #print(f"G-code File: {gcode_file}")
         #print(f"Output File: {output_file}")
 
-        # Replace this with the actual command to execute
-        command = f"gcodeZ.exe --stl={stl_file} --gcode={gcode_file} --output={output_file} --laser={laser_diameter} --stepwidth={stepwidth}"
+        if self.current_os == "Windows":
+            executable_name = "gcodeZ.exe"
+        else:
+            executable_name = "gcodeZ"
+
+        command = f"{executable_name} --stl={stl_file} --gcode={gcode_file} --output={output_file} --laser={laser_diameter} --stepwidth={stepwidth}"
 		
         if(self.simplify_checkbox.isChecked()):
             command += " --simplify"
