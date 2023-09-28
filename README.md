@@ -7,13 +7,13 @@ The machine coodinates are right-handed, where allowed values of x and y are pos
 
 ![coord](https://github.com/Rob0xFF/GCodeZ/blob/main/coordinates.png?raw=true)
 ## Laser Calibration
-The laser must be calibrated with respect to the spot size on the machine bed, depending on the z-height. The magnitude of the z-height is expressed by the following linear equation **|z| = cal1 * diameter + cal2**. Please specify the two parameters in the "laserCalibration.cfg" configuration file in the format 
+The laser must be calibrated with respect to the spot size on the machine bed, depending on the z-height. The magnitude of the z-height is expressed by the following linear equation **|z| = cal1 * diameter + cal2**, where **z** and **diameter** are given in mm. Please specify the two parameters in the "laserCalibration.cfg" configuration file in the format 
 ```
 # This line will be ignored
 cal1=<float>
 cal2=<float>
 ```
-as valid floating-point numbers. Lines beginning with # at the start will be ignored. If no parameters can be read, a warning will be issued, and the default values will be used for calculations. 
+where <float> must be replaced by valid floating-point numbers. Lines beginning with # at the start will be ignored. If no parameters can be read, a warning will be issued, and the default values will be used for calculations. 
 
 ## Required Command Line Options: 
  **--stl=stl_file** The STL file can be either binary or ASCII format.
@@ -22,10 +22,10 @@ as valid floating-point numbers. Lines beginning with # at the start will be ign
 
  **--output=output_file** The output file will contain the pseudo-3D code.
 
- **--laser=laser_diameter** The laser spot diameter is specified in millimeters and must match the diameter used for 2D GCode generation.
+ **--laser=laser_diameter** The laser spot diameter is specified in millimeters and must match the diameter used for 2D GCode generation. Parameter must be be valid floating point number.
 
 ## Optional Command Line Options:
- **--stepwith=stepwith** The minimum spatial point-to-point distance in the output is expressed in millimeters, with a default value of 0.5 millimeters. Reducing this value will result in greater precision in laser path tracking along the STL surface but will necessitate a longer computation time.
+ **--stepwith=stepwith** The minimum spatial point-to-point distance in the output is expressed in millimeters, with a default value of 0.5 millimeters. Reducing this value will result in greater precision in laser path tracking along the STL surface but will necessitate a longer computation time. Parameter must be be valid floating point number.
  
  **--simplify** Consider only facets whose normal vector contains a component in the positive z-direction. Additionally, if a proper range is given in the header of the GCode file, STL facet search is restricted to the area (0, 0) .. (xMax + 0.5, yMax + 0.5). This can lead to increased execution speed in certain models. Ensure that the STL file includes valid normals for each facet. The option does not require any parameters.
 
