@@ -104,12 +104,6 @@ class GCodeConverterApp(QWidget):
         output_file = self.output_file
         laser_diameter = self.laser_spinbox.value()
         stepwidth = self.stepwidth_spinbox.value()
-		
-        # Replace this with the actual conversion code
-        #print(f"Converting STL to G-code with laser diameter {laser_diameter}...")
-        #print(f"STL File: {stl_file}")
-        #print(f"G-code File: {gcode_file}")
-        #print(f"Output File: {output_file}")
 
         if self.current_os == "Windows":
             executable_name = "gcodeZ.exe"
