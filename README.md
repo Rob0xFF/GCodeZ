@@ -2,6 +2,8 @@
 A pseudo-3D projection of 2D laser G-code onto a surface derived from an *.stl file. It will add z-coordinates to each linear movement command (G00 and G01). If the distance between two points within the xy-plane exceeds the value given by stepwith, the linear path will be split up to allow precise laser path tracking along the surface. 
 # Coordinates
 The machine coodinates are right-handed, where x  and y are positive and z is negative. When z = 0, the laser is at its highest possible point. The minimum z value is calculated using the laser diameter and the calibration line, representing an exposure of the machine bed with the specified diameter. The workpiece coordinates (from STL) are right handed, where x, y anz z are positive. If the workpiece at any point given in the 2D GCode is higher than the magnitude of the minimun z value, the conversion stops to prevent a collision of the laser with the workpiece. 
+
+![coord](https://github.com/Rob0xFF/GCodeZ/blob/main/coordinates.png?raw=true)
 ## Required Command Line Options: 
  **--stl=stl_file** The STL file can be either binary or ASCII format.
  
@@ -24,4 +26,5 @@ g++ -std=c++2b gcode_file_translator.cpp distance_calculator.cpp STL_file.cpp ma
  
 ## GUI
 A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.
+
 ![GUI](https://github.com/Rob0xFF/GCodeZ/blob/main/gui.png?raw=true)
