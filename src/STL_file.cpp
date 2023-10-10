@@ -98,7 +98,7 @@ uint8_t STL_file::read()
 		stringstream myStream(tmpstr);
 		string thisline;
 		vertex normal;
-		regex find_xyz("([-]?[0-9]*\\.?[0-9]+)\\s*([-]?[0-9]*\\.?[0-9]+)\\s*([-]?[0-9]*\\.?[0-9]+)");
+		regex find_xyz("([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)");
 		smatch match_xyz;
 		uint32_t lines = 0;
 
@@ -122,10 +122,16 @@ uint8_t STL_file::read()
 		while(getline(myStream, thisline)) {
 			if(thisline.contains("facet normal")) {
 				if(regex_search(thisline, match_xyz, find_xyz)) {
-					normal.x = stof(match_xyz[1].str());
-					normal.y = stof(match_xyz[2].str());
-					normal.z = stof(match_xyz[3].str());
-					surface_normals[nFacet] = normal;
+					if(match_xyz[1].matched && match_xyz[3].matched && match_xyz[5].matched) {
+						normal.x = stof(match_xyz[1].str());
+						normal.y = stof(match_xyz[3].str());
+						normal.z = stof(match_xyz[5].str());
+						surface_normals[nFacet] = normal;
+					}
+					else {
+						cerr << "[Error] Unknown STL format" << endl;
+						exit(1);
+					}
 				}
 			}
 
@@ -136,25 +142,43 @@ uint8_t STL_file::read()
 			if(thisline.contains("vertex")) {
 				if(nextFacet == '1') {
 					if(regex_search(thisline, match_xyz, find_xyz)) {
-						v1.x = stof(match_xyz[1].str());
-						v1.y = stof(match_xyz[2].str());
-						v1.z = stof(match_xyz[3].str());
+						if(match_xyz[1].matched && match_xyz[3].matched && match_xyz[5].matched) {
+							v1.x = stof(match_xyz[1].str());
+							v1.y = stof(match_xyz[3].str());
+							v1.z = stof(match_xyz[5].str());
+						}
+						else {
+							cerr << "[Error] Unknown STL format" << endl;
+							exit(1);
+						}
 					}
 
 					nextFacet = '2';
 				} else if(nextFacet == '2') {
 					if(regex_search(thisline, match_xyz, find_xyz)) {
-						v2.x = stof(match_xyz[1].str());
-						v2.y = stof(match_xyz[2].str());
-						v2.z = stof(match_xyz[3].str());
+						if(match_xyz[1].matched && match_xyz[3].matched && match_xyz[5].matched) {
+							v2.x = stof(match_xyz[1].str());
+							v2.y = stof(match_xyz[3].str());
+							v2.z = stof(match_xyz[5].str());
+						}
+						else {
+							cerr << "[Error] Unknown STL format" << endl;
+							exit(1);
+						}
 					}
 
 					nextFacet = '3';
 				} else if(nextFacet == '3') {
 					if(regex_search(thisline, match_xyz, find_xyz)) {
-						v3.x = stof(match_xyz[1].str());
-						v3.y = stof(match_xyz[2].str());
-						v3.z = stof(match_xyz[3].str());
+						if(match_xyz[1].matched && match_xyz[3].matched && match_xyz[5].matched) {
+							v3.x = stof(match_xyz[1].str());
+							v3.y = stof(match_xyz[3].str());
+							v3.z = stof(match_xyz[5].str());
+						}
+						else {
+							cerr << "[Error] Unknown STL format" << endl;
+							exit(1);
+						}
 					}
 				}
 			}
