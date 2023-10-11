@@ -48,7 +48,7 @@ uint8_t gCodeFileTranslator::addZ()
 	string tmpstr(buffer, length);
 	stringstream myStream(tmpstr);
 	string thisline;
-	uint32_t lines = 0;
+	size_t lines = 0;
 
 	while(getline(myStream, thisline)) {
 		lines++;
@@ -57,15 +57,16 @@ uint8_t gCodeFileTranslator::addZ()
 	cout << "[Info]: " << lines << " lines of GCode to process." << endl;
 	myStream.clear();
 	myStream.seekg(0, ios::beg);
-	regex gCode("(G[0]?[0,1])\\s");
 	regex range("([-]?[0-9]*\\.?[0-9]+)\\s*\\.*\\s*([-]?[0-9]*\\.?[0-9]+)");
+	regex lineNumber("N\\d+\\s*");
 	regex coordX("X([-]?[0-9]*\\.?[0-9]+)");
 	regex coordY("Y([-]?[0-9]*\\.?[0-9]+)");
-	regex feedRate("F[-]?[0-9]*\\.?[0-9]+");
-	smatch matchG, matchRange, matchX, matchY, matchF;
+	smatch matchRange, matchLineNumber, matchX, matchY;
 	float thisX, thisY, lastX = 0.0f, lastY = 0.0f;
 	ofstream out(myOutputFile);
-	uint32_t line = 0;
+	size_t line = 0;
+	size_t lineOut = 1;
+	uint8_t addLineNumber = 0;
 	uint8_t passed[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	uint8_t index = 0;
 	float xRange[2] = {0.0f, 0.0f};
@@ -74,6 +75,14 @@ uint8_t gCodeFileTranslator::addZ()
 
 	while(getline(myStream, thisline)) {
 		line++;
+		string replacementX, replacementY, outStr;
+		
+		if(regex_search(thisline, matchLineNumber, lineNumber)) {
+			if(matchLineNumber[0].matched) {
+				thisline = regex_replace(thisline, lineNumber, "");
+				addLineNumber = 1;
+			}
+		}
 
 		if(thisline.contains("X range:")) {
 			if(regex_search(thisline, matchRange, range)) {
@@ -98,20 +107,8 @@ uint8_t gCodeFileTranslator::addZ()
 		}
 
 		if(thisline.contains("G00 ") || thisline.contains("G01 ") || thisline.contains("G0 ") || thisline.contains("G1 ")) {
-			string gCodeValue = "";
-			string feedRateValue = "";
 			string xValue = "";
 			string yValue = "";
-
-			if(regex_search(thisline, matchG, gCode)) {
-				gCodeValue = matchG[1].str();
-				//cout << gCodeValue << endl;
-			}
-
-			if(regex_search(thisline, matchF, feedRate)) {
-				feedRateValue = matchF[0].str();
-				//cout << feedRateValue << endl;
-			}
 
 			uint8_t newCoord = 0;
 
@@ -138,20 +135,52 @@ uint8_t gCodeFileTranslator::addZ()
 					float orig[3] = {lastX, lastY, myCalc->maxZ};
 					distFromLastPoint = sqrt(pow(thisX - lastX, 2) + pow(thisY - lastY, 2));
 					myCalc->findNearestIntersection(orig);
-					out << gCodeValue << " X" << lastX << " Y" << lastY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
+					replacementX = "X" + to_string(lastX);
+					replacementY = "Y" + to_string(lastY) + " Z" + to_string(myCalc->calculateLaserDistance());
+					outStr = "";
+					if(addLineNumber) {
+						outStr = "N" + to_string(lineOut) + " ";
+						lineOut++;
+					}
+					outStr += thisline;
+					outStr = regex_replace(outStr, coordX, replacementX);
+					outStr = regex_replace(outStr, coordY, replacementY);
+					out << outStr << endl;
 				}
 
 				float orig[3] = {thisX, thisY, myCalc->maxZ};
 				myCalc->findNearestIntersection(orig);
-				out << gCodeValue << " X" << thisX << " Y" << thisY << " Z" << myCalc->calculateLaserDistance() << " " << feedRateValue << endl;
+				replacementX = "X" + to_string(thisX);
+				replacementY = "Y" + to_string(thisY) + " Z" + to_string(myCalc->calculateLaserDistance());
+				outStr = "";
+				if(addLineNumber) {
+					outStr = "N" + to_string(lineOut) + " ";
+					lineOut++;
+				}
+				outStr += thisline;
+				outStr = regex_replace(outStr, coordX, replacementX);
+				outStr = regex_replace(outStr, coordY, replacementY);
+				out << outStr << endl;
 				lastX = thisX;
 				lastY = thisY;
 				newCoord = 0;
 			} else {
-				out << thisline << endl;
+				outStr = "";
+				if(addLineNumber) {
+					outStr = "N" + to_string(lineOut) + " ";
+					lineOut++;
+				}
+				outStr += thisline;
+				out << outStr << endl;
 			}
 		} else {
-			out << thisline << endl;
+			outStr = "";
+			if(addLineNumber) {
+				outStr = "N" + to_string(lineOut) + " ";
+				lineOut++;
+			}
+			outStr += thisline;
+			out << outStr << endl;
 		}
 	}
 
