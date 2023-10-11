@@ -36,6 +36,10 @@ It utilizes std::string.contains(), hence the -std=c++2b compiler flag needs to 
 ```
 g++ -std=c++2b gcode_file_translator.cpp distance_calculator.cpp STL_file.cpp main.cpp -o gcodeZ.exe
 ```
+You can also use **qmake**:
+```
+qmake && make && make clean
+```
  
 ## GUI
 A basic GUI for Python is accessible at /src/gcodeZ_GUI.py.
