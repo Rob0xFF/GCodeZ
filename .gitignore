@@ -11,3 +11,7 @@ src/dist/gcodeZ_GUI
 Makefile
 Makefile.Debug
 Makefile.Release
+GCodeZ.app/Contents/Info.plist
+GCodeZ.app/Contents/MacOS/GCodeZ
+GCodeZ.app/Contents/PkgInfo
+GCodeZ.app/Contents/Resources/empty.lproj
