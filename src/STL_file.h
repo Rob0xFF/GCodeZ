@@ -26,7 +26,7 @@ class STL_file
 
 		void setYRange(float * yRange);
 
-		size_t numberOfFacets = 0;
+		uint32_t numberOfFacets = 0;
 
 		struct vertex {
 			float x;
@@ -48,7 +48,7 @@ class STL_file
 
 	private:
 
-		size_t nFacet = 0;
+		uint32_t nFacet = 0;
 
 		uint8_t isBinary();
 
@@ -60,7 +60,7 @@ class STL_file
 
 		std::filebuf * pbuf;
 
-		size_t size;
+		uint32_t size;
 
 		char * buffer;
 

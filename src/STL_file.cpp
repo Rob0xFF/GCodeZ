@@ -43,7 +43,7 @@ uint8_t STL_file::read()
 	if(is_binary) {
 		bufptr = buffer;
 		bufptr += 80;
-		numberOfFacets = * (size_t *)(bufptr);
+		numberOfFacets = * (uint32_t *)(bufptr);
 
 		if(size != 80 + 4 + numberOfFacets * (4 * 12 + 2)) {
 			cerr << "[Error]: STL File is not valid. Exit." << endl;
@@ -100,7 +100,7 @@ uint8_t STL_file::read()
 		vertex normal;
 		regex find_xyz("([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)\\s*([-]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)");
 		smatch match_xyz;
-		size_t lines = 0;
+		uint32_t lines = 0;
 
 		while(getline(myStream, thisline)) {
 			if(thisline.contains("facet normal")) {
@@ -251,7 +251,7 @@ uint8_t STL_file::isBinary()
 void STL_file::setXRange(float * xRange)
 {
 	if(doSimplify) {
-		for(size_t i = 0; i < nFacet; i++) {
+		for(uint32_t i = 0; i < nFacet; i++) {
 			if((surface[i].vertex1.x < 0.0f && surface[i].vertex2.x < 0.0f && surface[i].vertex3.x < 0.0f) || (surface[i].vertex1.x > xRange[1] + 0.5f && surface[i].vertex2.x > xRange[1] + 0.5f && surface[i].vertex3.x > xRange[1] + 0.5f)) {
 				useFacet[i] = 0;
 			}
@@ -262,7 +262,7 @@ void STL_file::setXRange(float * xRange)
 void STL_file::setYRange(float * yRange)
 {
 	if(doSimplify) {
-		for(size_t i = 0; i < nFacet; i++) {
+		for(uint32_t i = 0; i < nFacet; i++) {
 			if((surface[i].vertex1.y < 0.0f && surface[i].vertex2.y < 0.0f && surface[i].vertex3.y < 0.0f) || (surface[i].vertex1.y > yRange[1] + 0.5f && surface[i].vertex2.y > yRange[1] + 0.5f && surface[i].vertex3.y > yRange[1] + 0.5f)) {
 				useFacet[i] = 0;
 			}

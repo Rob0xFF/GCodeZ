@@ -24,7 +24,7 @@ class gCodeFileTranslator
 
 		uint8_t setMinStep(float minstep);
 
-		size_t length = 0;
+		uint32_t length = 0;
 
 		uint8_t read();
 

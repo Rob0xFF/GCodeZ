@@ -44,8 +44,8 @@ class DistanceCalculator
 
 		float calculateLaserDistance();
 
-		size_t pointsOutside = 0;
-		size_t pointsTooLow = 0;
+		uint32_t pointsOutside = 0;
+		uint32_t pointsTooLow = 0;
 
 		float laserDiameter = 0.0f;
 
