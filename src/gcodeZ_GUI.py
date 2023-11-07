@@ -111,7 +111,6 @@ class GCodeConverterApp(QWidget):
             executable_name = "gcodeZ"
 
         command = f"{executable_name} --stl=\"{stl_file}\" --gcode=\"{gcode_file}\" --output=\"{output_file}\" --laser={laser_diameter} --stepwidth={stepwidth}"
-        print(command)
 		
         if(self.simplify_checkbox.isChecked()):
             command += " --simplify"
