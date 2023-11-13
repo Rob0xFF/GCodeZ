@@ -61,6 +61,7 @@ uint8_t gCodeFileTranslator::addZ()
 	regex lineNumber("N\\d+\\s*");
 	regex coordX("X([-]?[0-9]*\\.?[0-9]+)");
 	regex coordY("Y([-]?[0-9]*\\.?[0-9]+)");
+	regex coordZ("Z([-]?[0-9]*\\.?[0-9]+)\\s+");
 	smatch matchRange, matchLineNumber, matchX, matchY;
 	float thisX, thisY, lastX = 0.0f, lastY = 0.0f;
 	ofstream out(myOutputFile);
@@ -143,6 +144,7 @@ uint8_t gCodeFileTranslator::addZ()
 						lineOut++;
 					}
 					outStr += thisline;
+					outStr = regex_replace(outStr, coordZ, "");
 					outStr = regex_replace(outStr, coordX, replacementX);
 					outStr = regex_replace(outStr, coordY, replacementY);
 					out << outStr << endl;
@@ -158,6 +160,7 @@ uint8_t gCodeFileTranslator::addZ()
 					lineOut++;
 				}
 				outStr += thisline;
+				outStr = regex_replace(outStr, coordZ, "");
 				outStr = regex_replace(outStr, coordX, replacementX);
 				outStr = regex_replace(outStr, coordY, replacementY);
 				out << outStr << endl;
