@@ -40,6 +40,8 @@ DistanceCalculator::DistanceCalculator(STL_file * stlFile, float diameter)
 	}
 
 	config.close();
+
+	maxZ = cal1 * laserDiameter + cal2;
 }
 
 DistanceCalculator::~DistanceCalculator()

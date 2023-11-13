@@ -47,18 +47,18 @@ class DistanceCalculator
 		uint32_t pointsOutside = 0;
 		uint32_t pointsTooLow = 0;
 
-		float laserDiameter = 0.0f;
-
-		float cal1 = -4.5584f;
-		float cal2 = 34.71f;
-
-		float maxZ = cal1 * laserDiameter + cal2;
+		float maxZ;
 
 	private:
 
 		STL_file * mySTL_file;
 
 		std::ifstream config;
+
+		float laserDiameter;
+
+		float cal1 = -4.5584f;
+		float cal2 = 34.71f;
 
 		float * myOrig;
 
@@ -76,8 +76,6 @@ class DistanceCalculator
 		float dist;
 		float mindist = 1000.0f;
 		uint8_t validIntersections = 0;
-
-		float laserDist = 0.0f;
 
 		uint8_t moellerTrumbore(float orig[3], float vert0[3], float vert1[3], float vert2[3]);
 
