@@ -1,6 +1,6 @@
  TEMPLATE   = app
  QMAKE_CXXFLAGS += -Wall
- CONFIG += c++2b
+ CONFIG += c++2b static
  CONFIG -= app_bundle
  SRCDIR = ./src
  HEADERS   += $${SRCDIR}/distance_calculator.h $${SRCDIR}/gcode_file_translator.h $${SRCDIR}/STL_file.h
