@@ -1,3 +1,4 @@
+ TARGET = gcodeZ
  TEMPLATE   = app
  QMAKE_CXXFLAGS += -Wall
  CONFIG += c++2b static console
